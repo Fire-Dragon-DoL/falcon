@@ -1,24 +1,19 @@
 class TimelineRequestsController < ApplicationController
   # GET /timeline_requests/new
   def new
-    now = Time.current
-    yesterday = now - 1.days
-    @timeline_request = TimelineRequest.new(
-      yesterday,
-      now,
-      ""
-    )
+    @timeline_request = TimelineRequest.last_24h
   end
 
   # POST /timeline_requests
   def create
     @timeline_request = TimelineRequest.build(timeline_request_params)
 
-    if @timeline_request.valid?
-      redirect_to new_timeline_request_url, notice: 'Timeline request was successfully created.'
-    else
+    unless @timeline_request.valid?
       render :new
+      return
     end
+
+    redirect_to new_timeline_request_url, notice: 'Timeline request was successfully created.'
   end
 
   private

@@ -29,6 +29,13 @@ class TimelineRequest
     new(params[:start_date], params[:end_date], params[:to])
   end
 
+  def self.last_24h
+    now = Time.current
+    yesterday = now - 1.days
+
+    TimelineRequest.new(yesterday, now, "")
+  end
+
   # value is an array of 5 elements for the date time
   def start_date=(value)
     return @start_date = nil if value.nil?
