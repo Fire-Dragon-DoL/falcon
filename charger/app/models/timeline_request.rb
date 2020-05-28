@@ -5,8 +5,8 @@ class TimelineRequest
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_reader :start_date
-  attr_reader :end_date
+  attr_accessor :start_date
+  attr_accessor :end_date
   attr_accessor :to
 
   validates :start_date,
@@ -20,13 +20,35 @@ class TimelineRequest
   validate :start_date_lteq_end_date
 
   def initialize(start_date, end_date, to)
-    self.start_date = start_date
-    self.end_date = end_date
-    self.to = to
+    @start_date = start_date
+    @end_date = end_date
+    @to = to
   end
 
   def self.build(params)
-    new(params[:start_date], params[:end_date], params[:to])
+    start_date = nil
+    end_date = nil
+
+    if params[:start_date]
+      Time.use_zone("UTC") do
+        start_date = Time.zone.local(*params[:start_date])
+      end
+    end
+
+    if params[:end_date]
+      Time.use_zone("UTC") do
+        end_date = Time.zone.local(*params[:end_date])
+      end
+    end
+
+    new(start_date, end_date, params[:to])
+  end
+
+  def self.parse(start_date, end_date, to)
+    start_date = Time.zone.parse(start_date)
+    end_date = Time.zone.parse(end_date)
+
+    new(start_date, end_date, to)
   end
 
   def self.last_24h
@@ -34,24 +56,6 @@ class TimelineRequest
     yesterday = now - 1.days
 
     TimelineRequest.new(yesterday, now, "")
-  end
-
-  # value is an array of 5 elements for the date time
-  def start_date=(value)
-    return @start_date = nil if value.nil?
-
-    Time.use_zone("UTC") do
-      @start_date = Time.zone.local(*value)
-    end
-  end
-
-  # value is an array of 5 elements for the date time
-  def end_date=(value)
-    return @end_date = nil if value.nil?
-
-    Time.use_zone("UTC") do
-      @end_date = Time.zone.local(*value)
-    end
   end
 
   def start_date_lteq_end_date?

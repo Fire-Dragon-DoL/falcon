@@ -9,6 +9,8 @@ gem 'sass-rails', '>= 6'
 gem 'webpacker', '~> 4.0'
 gem 'redis', '~> 4.1'
 gem 'bunny', '~> 2.15'
+gem 'sidekiq', '~> 6.0'
+gem 'redis-namespace', '~> 1.7'
 
 group :development, :test do
   gem 'pry-byebug'

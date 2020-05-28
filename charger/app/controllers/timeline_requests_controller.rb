@@ -13,38 +13,28 @@ class TimelineRequestsController < ApplicationController
       return
     end
 
+    ::FetchUrlsJob.perform_later(@timeline_request)
+
     redirect_to new_timeline_request_url, notice: 'Timeline request was successfully created.'
   end
 
   private
 
   def timeline_request_params
-    fetched = params.require(:timeline_request).permit(
+    args = params.require(:timeline_request).permit(
       :start_date,
       :end_date,
       :to
     )
 
-    if fetched["start_date(1i)"]
-      fetched[:start_date] = [
-        fetched["start_date(1i)"],
-        fetched["start_date(2i)"],
-        fetched["start_date(3i)"],
-        fetched["start_date(4i)"],
-        fetched["start_date(5i)"]
-      ]
+    if args["start_date(1i)"]
+      args[:start_date] = (1..5).map { |idx| args["start_date(#{idx}i)"] }
     end
 
-    if fetched["end_date(1i)"]
-      fetched[:end_date] = [
-        fetched["end_date(1i)"],
-        fetched["end_date(2i)"],
-        fetched["end_date(3i)"],
-        fetched["end_date(4i)"],
-        fetched["end_date(5i)"]
-      ]
+    if args["end_date(1i)"]
+      args[:end_date] = (1..5).map { |idx| args["end_date(#{idx}i)"] }
     end
 
-    fetched
+    args
   end
 end
