@@ -13,17 +13,17 @@
 
   <div class="field">
     <%= form.label :start_date %>
-    <%= form.datetime_select :start_date %>
+    <%= form.datetime_select :start_date %> UTC
   </div>
 
   <div class="field">
     <%= form.label :end_date %>
-    <%= form.datetime_select :end_date %>
+    <%= form.datetime_select :end_date %> UTC
   </div>
 
   <div class="field">
     <%= form.label :to %>
-    <%= form.text_area :to %>
+    <%= form.email_field :to %>
   </div>
 
   <div class="actions">
