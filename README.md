@@ -22,7 +22,8 @@ rails new charger \
   --skip-turbolinks \
   --skip-spring \
   --skip-listen \
-  --skip-bootsnap
+  --skip-bootsnap \
+  --skip-system-test
 ```
 
 ## Blaster

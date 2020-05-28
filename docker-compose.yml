@@ -1,19 +1,19 @@
 version: "3.8"
 services:
   charger:
-    # depends_on:
-    #   - storage
+    depends_on:
+      - storage
     build: ./charger
     ports:
       - "3001:3001"
     environment:
       - "REDIS_URL=redis://storage:6400/15"
       - "RABBITMQ_URL=amqp://messaging:5600"
-  # storage:
-  #   image: redis:6.0.3-alpine3.11
-  #   ports:
-  #     - "6400:6379"
-  # messaging:
-  #   image: rabbitmq:3.8.4-alpine
-  #   ports:
-  #     - "5600:5672"
+  storage:
+    image: redis:6.0.3-alpine3.11
+    ports:
+      - "6400:6379"
+  messaging:
+    image: rabbitmq:3.8.4-alpine
+    ports:
+      - "5600:5672"

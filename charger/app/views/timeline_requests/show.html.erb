@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @timeline_request.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @timeline_request.end_date %>
+</p>
+
+<p>
+  <strong>To:</strong>
+  <%= @timeline_request.to %>
+</p>
+
+<%= link_to 'Edit', edit_timeline_request_path(@timeline_request) %> |
+<%= link_to 'Back', timeline_requests_path %>
