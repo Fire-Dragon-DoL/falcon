@@ -12,6 +12,8 @@ gem 'redis', '~> 4.1'
 gem 'redis-namespace', '~> 1.7'
 gem 'sass-rails', '>= 6'
 gem 'sidekiq', '~> 6.0'
+gem 'snowflake-id', '0.0.1'
+gem 'twitter', '~> 7.0'
 gem 'webpacker', '~> 4.0'
 
 group :development, :test do

@@ -39,3 +39,8 @@ rails new charger \
   --skip-action-cable \
   --skip-turbolinks
 ```
+
+## Further Development
+
+- Cache Twitter API requests
+- Support multiple Twitter users

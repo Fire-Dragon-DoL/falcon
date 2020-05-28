@@ -20,6 +20,10 @@ services:
       - "REDIS_URL=redis://storage:6379/15"
       - "RABBITMQ_URL=amqp://messaging:5672"
       - "REDIS_PROVIDER=REDIS_URL"
+      - "FETCHER_TWT_API_KEY=${FETCHER_TWT_API_KEY}"
+      - "FETCHER_TWT_API_SECRET=${FETCHER_TWT_API_SECRET}"
+      - "FETCHER_TWT_ACCESS_TOKEN=${FETCHER_TWT_ACCESS_TOKEN}"
+      - "FETCHER_TWT_ACCESS_TOKEN_SECRET=${FETCHER_TWT_ACCESS_TOKEN_SECRET}"
   storage:
     image: redis:6.0.3-alpine3.11
     ports:
