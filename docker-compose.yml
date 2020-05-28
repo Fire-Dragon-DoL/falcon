@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  charger:
+    depends_on:
+      - storage
+    build: ./charger
+    ports:
+      - "3001:3001"
+    environment:
+      - "REDIS_URL=redis://db-redis:6379/15"
+  storage:
+    image: redis:6.0.3-alpine3.11
+    ports:
+      - "6400:6379"
+  eventstore:
+    build: ./eventstore
+    ports:
+      - "5400:5432"
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=whatever"
+      - "PGUSER=postgres"
