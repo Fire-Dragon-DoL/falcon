@@ -13,14 +13,16 @@ Project was generated using the following command:
 
 ```bash
 rails new charger \
-  --database=postgresql \
   --skip-action-mailer \
   --skip-action-mailbox \
   --skip-action-text \
   --skip-active-record \
   --skip-active-storage \
   --skip-action-cable \
-  --skip-turbolinks
+  --skip-turbolinks \
+  --skip-spring \
+  --skip-listen \
+  --skip-bootsnap
 ```
 
 ## Blaster

@@ -7,16 +7,12 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - "REDIS_URL=redis://db-redis:6379/15"
+      - "REDIS_URL=redis://storage:6400/15"
   storage:
     image: redis:6.0.3-alpine3.11
     ports:
       - "6400:6379"
-  eventstore:
-    build: ./eventstore
+  messaging:
+    image: rabbitmq:3.8.4-alpine
     ports:
-      - "5400:5432"
-    environment:
-      - "POSTGRES_USER=postgres"
-      - "POSTGRES_PASSWORD=whatever"
-      - "PGUSER=postgres"
+      - "5600:5672"
