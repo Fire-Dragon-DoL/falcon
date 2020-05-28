@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'domain/date_time/parse'
+
 class TimelineRequest
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -26,25 +28,19 @@ class TimelineRequest
   end
 
   def self.build(params)
-    start_date = parse_datetime_ary(params[:start_date])
-    end_date = parse_datetime_ary(params[:end_date])
+    start_date = params[:start_date]
+    start_date = ::Domain::DateTime::Parse::Array.(start_date) unless start_date.nil?
+    end_date = params[:end_date]
+    end_date = ::Domain::DateTime::Parse::Array.(end_date) unless end_date.nil?
 
     new(start_date, end_date, params[:to])
   end
 
   def self.parse(start_date, end_date, to)
-    start_date = Time.zone.parse(start_date)
-    end_date = Time.zone.parse(end_date)
+    start_date = ::Domain::DateTime::Parse::ISO8601.(start_date)
+    end_date = ::Domain::DateTime::Parse::ISO8601.(end_date)
 
     new(start_date, end_date, to)
-  end
-
-  def self.parse_datetime_ary(datetime_ary)
-    return nil if datetime_ary.nil?
-
-    Time.use_zone('UTC') do
-      Time.zone.local(*datetime_ary)
-    end
   end
 
   def self.last_24h

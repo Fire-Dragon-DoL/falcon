@@ -15,6 +15,7 @@ class TimelineRequestsController < ApplicationController
       return
     end
 
+    ::DB::Storage.set("foo", "bar")
     ::FetchUrlsJob.perform_later(@timeline_request)
 
     redirect_to new_timeline_request_url, notice: 'Timeline request was successfully created.'

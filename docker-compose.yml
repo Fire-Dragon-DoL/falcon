@@ -7,8 +7,19 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - "REDIS_URL=redis://storage:6400/15"
-      - "RABBITMQ_URL=amqp://messaging:5600"
+      - "REDIS_URL=redis://storage:6379/15"
+      - "RABBITMQ_URL=amqp://messaging:5672"
+      - "REDIS_PROVIDER=REDIS_URL"
+  fetcher:
+    depends_on:
+      - storage
+      - messaging
+    build: ./charger
+    entrypoint: ["bundle", "exec", "sidekiq"]
+    environment:
+      - "REDIS_URL=redis://storage:6379/15"
+      - "RABBITMQ_URL=amqp://messaging:5672"
+      - "REDIS_PROVIDER=REDIS_URL"
   storage:
     image: redis:6.0.3-alpine3.11
     ports:
