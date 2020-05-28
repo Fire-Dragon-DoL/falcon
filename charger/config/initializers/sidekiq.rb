@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 Sidekiq.configure_server do |config|
-  config.redis = { namespace: "falcon:charger:jobs" }
+  config.redis = { namespace: 'falcon:charger:jobs' }
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { namespace: "falcon:charger:jobs"}
+  config.redis = { namespace: 'falcon:charger:jobs' }
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimelineRequestsController < ApplicationController
   # GET /timeline_requests/new
   def new
@@ -27,13 +29,9 @@ class TimelineRequestsController < ApplicationController
       :to
     )
 
-    if args["start_date(1i)"]
-      args[:start_date] = (1..5).map { |idx| args["start_date(#{idx}i)"] }
-    end
+    args[:start_date] = (1..5).map { |idx| args["start_date(#{idx}i)"] } if args['start_date(1i)']
 
-    if args["end_date(1i)"]
-      args[:end_date] = (1..5).map { |idx| args["end_date(#{idx}i)"] }
-    end
+    args[:end_date] = (1..5).map { |idx| args["end_date(#{idx}i)"] } if args['end_date(1i)']
 
     args
   end

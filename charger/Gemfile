@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.1'
 
-gem 'rails', '~> 6.0.3', '>= 6.0.3.1'
-gem 'puma', '~> 4.1'
-gem 'sass-rails', '>= 6'
-gem 'webpacker', '~> 4.0'
-gem 'redis', '~> 4.1'
 gem 'bunny', '~> 2.15'
-gem 'sidekiq', '~> 6.0'
+gem 'puma', '~> 4.1'
+gem 'rails', '~> 6.0.3', '>= 6.0.3.1'
+gem 'redis', '~> 4.1'
 gem 'redis-namespace', '~> 1.7'
+gem 'sass-rails', '>= 6'
+gem 'sidekiq', '~> 6.0'
+gem 'webpacker', '~> 4.0'
 
 group :development, :test do
   gem 'pry-byebug'

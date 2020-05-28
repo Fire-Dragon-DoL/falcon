@@ -26,20 +26,8 @@ class TimelineRequest
   end
 
   def self.build(params)
-    start_date = nil
-    end_date = nil
-
-    if params[:start_date]
-      Time.use_zone("UTC") do
-        start_date = Time.zone.local(*params[:start_date])
-      end
-    end
-
-    if params[:end_date]
-      Time.use_zone("UTC") do
-        end_date = Time.zone.local(*params[:end_date])
-      end
-    end
+    start_date = parse_datetime_ary(params[:start_date])
+    end_date = parse_datetime_ary(params[:end_date])
 
     new(start_date, end_date, params[:to])
   end
@@ -51,11 +39,19 @@ class TimelineRequest
     new(start_date, end_date, to)
   end
 
+  def self.parse_datetime_ary(datetime_ary)
+    return nil if datetime_ary.nil?
+
+    Time.use_zone('UTC') do
+      Time.zone.local(*datetime_ary)
+    end
+  end
+
   def self.last_24h
     now = Time.current
-    yesterday = now - 1.days
+    yesterday = now - 1.day
 
-    TimelineRequest.new(yesterday, now, "")
+    TimelineRequest.new(yesterday, now, '')
   end
 
   def start_date_lteq_end_date?
@@ -65,13 +61,13 @@ class TimelineRequest
   end
 
   def start_date_lteq_end_date
-    unless start_date_lteq_end_date?
-      errors.add(
-        :start_date,
-        :gt_end_date,
-        message: "must be lower or equal to end_date"
-      )
-    end
+    return if start_date_lteq_end_date?
+
+    errors.add(
+      :start_date,
+      :gt_end_date,
+      message: 'must be lower or equal to end_date'
+    )
   end
 
   def persisted?
