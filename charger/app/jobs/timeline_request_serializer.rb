@@ -9,7 +9,9 @@ class TimelineRequestSerializer < ActiveJob::Serializers::ObjectSerializer
     super({
       'start_date' => timeline.start_date.iso8601,
       'end_date' => timeline.end_date.iso8601,
-      'to' => timeline.to
+      'to' => timeline.to,
+      'subject' => timeline.subject,
+      'body' => timeline.body
     })
   end
 
@@ -17,7 +19,9 @@ class TimelineRequestSerializer < ActiveJob::Serializers::ObjectSerializer
     ::TimelineRequest.parse(
       hash['start_date'],
       hash['end_date'],
-      hash['to']
+      hash['to'],
+      hash['subject'],
+      hash['body']
     )
   end
 end

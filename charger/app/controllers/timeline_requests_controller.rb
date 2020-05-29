@@ -3,7 +3,7 @@
 class TimelineRequestsController < ApplicationController
   # GET /timeline_requests/new
   def new
-    @timeline_request = TimelineRequest.last_24h
+    @timeline_request = TimelineRequest.default
   end
 
   # POST /timeline_requests
@@ -26,7 +26,9 @@ class TimelineRequestsController < ApplicationController
     args = params.require(:timeline_request).permit(
       :start_date,
       :end_date,
-      :to
+      :to,
+      :subject,
+      :body
     )
 
     args[:start_date] = (1..5).map { |idx| args["start_date(#{idx}i)"] } if args['start_date(1i)']

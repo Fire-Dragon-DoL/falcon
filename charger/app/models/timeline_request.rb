@@ -10,6 +10,8 @@ class TimelineRequest
   attr_accessor :start_date
   attr_accessor :end_date
   attr_accessor :to
+  attr_accessor :subject
+  attr_accessor :body
 
   validates :start_date,
             presence: true
@@ -19,12 +21,16 @@ class TimelineRequest
             presence: true,
             length: { minimum: 3, maximum: 255 },
             format: { with: /[^@]+@[^@]+/ }
+  validates :subject, presence: true
+  validates :body, presence: true
   validate :start_date_lteq_end_date
 
-  def initialize(start_date, end_date, to)
+  def initialize(start_date, end_date, to, subject, body)
     @start_date = start_date
     @end_date = end_date
     @to = to
+    @subject = subject
+    @body = body
   end
 
   def self.build(params)
@@ -33,21 +39,34 @@ class TimelineRequest
     end_date = params[:end_date]
     end_date = ::Domain::DateTime::Parse::Array.(end_date) unless end_date.nil?
 
-    new(start_date, end_date, params[:to])
+    new(start_date, end_date, params[:to], params[:subject], params[:body])
   end
 
-  def self.parse(start_date, end_date, to)
+  def self.parse(start_date, end_date, to, subject, body)
     start_date = ::Domain::DateTime::Parse::ISO8601.(start_date)
     end_date = ::Domain::DateTime::Parse::ISO8601.(end_date)
 
-    new(start_date, end_date, to)
+    new(start_date, end_date, to, subject, body)
   end
 
-  def self.last_24h
+  def self.default
     now = Time.current
     yesterday = now - 1.day
 
-    TimelineRequest.new(yesterday, now, '')
+    TimelineRequest.new(yesterday, now, '', default_subject, default_body)
+  end
+
+  def self.default_subject
+    "Twitter URLs"
+  end
+
+  def self.default_body
+    <<-TEXT
+Twitter URLs:
+{% for message in messages %}
+  - {{ message.url }} | {{ message.date }} | {{ message.summary }}
+{% endfor %}
+    TEXT
   end
 
   def start_date_lteq_end_date?

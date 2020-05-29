@@ -1,5 +1,6 @@
 require 'domain/twitter/read_timeline_urls'
 require 'domain/email/send'
+require 'domain/email/message'
 
 module Domain
   class SendURLs
@@ -18,17 +19,18 @@ module Domain
       instance
     end
 
-    def self.call(start_date, end_date, to_email)
+    def self.call(start_date, end_date, to_email, subject, body)
       instance = build
       instance.(start_date, end_date, to_email)
     end
 
-    def call(start_date, end_date, to_email)
+    def call(start_date, end_date, to_email, subject, body)
       messages = []
       read_timeline_urls.(start_date, end_date) { |msg| messages << msg }
 
-      data = { "messages" => messages, "to" => to_email }
-      send_email.(data)
+      email = ::Domain::Email::Message.new(to_email, messages, subject, body)
+
+      send_email.(email)
     end
   end
 end

@@ -12,7 +12,9 @@ class FetchUrlsJob < ApplicationJob
     send_urls.(
       timeline_request.start_date,
       timeline_request.end_date,
-      timeline_request.to
+      timeline_request.to,
+      timeline_request.subject,
+      timeline_request.body
     )
   end
 end
