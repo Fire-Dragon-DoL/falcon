@@ -9,7 +9,6 @@ services:
       - "3001:3001"
     environment:
       - "REDIS_URL=redis://storage:6379/15"
-      - "RABBITMQ_URL=amqp://messaging:5672"
       - "REDIS_PROVIDER=REDIS_URL"
   fetcher:
     depends_on:
@@ -25,28 +24,13 @@ services:
       - "FETCHER_TWT_API_SECRET=${FETCHER_TWT_API_SECRET}"
       - "FETCHER_TWT_ACCESS_TOKEN=${FETCHER_TWT_ACCESS_TOKEN}"
       - "FETCHER_TWT_ACCESS_TOKEN_SECRET=${FETCHER_TWT_ACCESS_TOKEN_SECRET}"
-  laser:
-    depends_on:
-      - storage
-    build: ./blaster
-    ports:
-      - "3002:3002"
-    environment:
-      - "REDIS_URL=redis://storage:6379/15"
-      - "RABBITMQ_URL=amqp://messaging:5672"
-      - "REDIS_PROVIDER=REDIS_URL"
   blaster:
     depends_on:
-      - storage
       - messaging
     build: ./blaster
     entrypoint: ["bundle", "exec", "rake", "sneakers:run"]
-    ports:
-      - "3002:3002"
     environment:
-      - "REDIS_URL=redis://storage:6379/15"
       - "RABBITMQ_URL=amqp://messaging:5672"
-      - "REDIS_PROVIDER=REDIS_URL"
       - "WORKERS=EmailWorker"
   storage:
     image: redis:6.0.3-alpine3.11
