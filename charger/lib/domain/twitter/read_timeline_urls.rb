@@ -1,33 +1,31 @@
 require 'domain/twitter'
-require 'domain/twitter/get_timeline_urls'
+require 'domain/twitter/read_timeline_urls/iterator'
 
 module Domain
   module Twitter
     class ReadTimelineURLs
-      attr_accessor :get_timeline_urls
+      attr_accessor :iterator
 
       def initialize
-        @get_timeline_urls = ::Domain::Twitter::GetTimelineURLs::Substitute.build_with_personal_response
+        @iterator = Iterator.new
       end
 
       def self.build
         instance = new
-        instance.get_timeline_urls = ::Domain::Twitter::GetTimelineURLs.new
+        instance.iterator = Iterator.build
         instance
       end
 
-      def call(from, to, client: client)
-        Enumerator.new do |iterator|
-          messages = get_timeline_urls.(from, to, client: client)
+      def call(from, to, session: ::Domain::Twitter.session, &block)
+        iterator.(from, to, session: session) do |message_hash|
+          next if message_hash["entities"]["urls"].empty?
 
-          unless messages.empty?
-            next_since_id = messages.last["id"]
-            next_from = SnowflakeId.new(next_since_id)
-            messages.reject { |message| message["entities"]["urls"].empty? }
+          message_hash["entities"]["urls"].each do |url_hash|
+            message = Message.build_from_hash(url_hash, message_hash)
+
+            block.(message)
           end
         end
-        # map data
-
       end
     end
   end
