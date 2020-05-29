@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Domain
   module Twitter
     class Message
@@ -15,10 +17,10 @@ module Domain
 
       def self.build_from_hash(url_hash, message_hash)
         new(
-          Time.zone.parse(message_hash["created_at"]).in_time_zone("UTC"),
-          url_hash["url"],
-          message_hash["text"],
-          url_hash["display_url"] || url_hash["url"]
+          Time.zone.parse(message_hash['created_at']).in_time_zone('UTC'),
+          url_hash['url'],
+          message_hash['text'],
+          url_hash['display_url'] || url_hash['url']
         )
       end
 
@@ -28,10 +30,10 @@ module Domain
 
       def as_json
         {
-          "date" => date.iso8601,
-          "url" => url,
-          "summary" => summary,
-          "display_url" => display_url
+          'date' => date.iso8601,
+          'url' => url,
+          'summary' => summary,
+          'display_url' => display_url
         }
       end
 
@@ -43,9 +45,9 @@ module Domain
         def self.default
           Message.new(
             Time.current,
-            "https://twitter.com",
-            "Twitter",
-            "twitter.com"
+            'https://twitter.com',
+            'Twitter',
+            'twitter.com'
           )
         end
       end

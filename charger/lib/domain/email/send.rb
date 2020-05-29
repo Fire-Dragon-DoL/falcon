@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Domain
   module Email
     class Send
@@ -14,7 +16,7 @@ module Domain
 
       class Substitute
         def call(message)
-          puts message.as_json.inspect
+          Rails.logger.info(message.as_json.inspect)
         end
 
         def self.call(message)

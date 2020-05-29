@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'domain/twitter/read_timeline_urls'
 require 'domain/email/send'
 require 'domain/email/message'
@@ -19,7 +21,7 @@ module Domain
       instance
     end
 
-    def self.call(start_date, end_date, to_email, subject, body)
+    def self.call(start_date, end_date, to_email, _subject, _body)
       instance = build
       instance.(start_date, end_date, to_email)
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'domain/twitter'
 require 'domain/twitter/get_timeline_urls'
 require 'domain/twitter/id'
@@ -31,7 +33,7 @@ module Domain
 
           return if messages.empty?
 
-          next_since_id = messages.last["id"] + 1
+          next_since_id = messages.last['id'] + 1
           next_from = Id.to_time(next_since_id)
 
           messages.each do |message|

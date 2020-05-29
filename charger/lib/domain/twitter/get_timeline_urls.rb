@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'domain/twitter'
 
 module Domain
@@ -11,6 +13,8 @@ module Domain
       end
 
       def call(from, to, session: ::Domain::Twitter.session)
+        from = from.in_time_zone('UTC')
+        to = to.in_time_zone('UTC')
         since_id = SnowflakeId.to_snowflake(from.to_time).id - 1
         max_id = SnowflakeId.to_snowflake(to.to_time).id
 
@@ -18,20 +22,11 @@ module Domain
       end
 
       def timeline(session, since_id, max_id)
-        if user_id.nil?
-          return session.home_timeline(
-            since_id: since_id,
-            max_id: max_id,
-            count: 200
-          ).as_json
-        end
+        opts = { since_id: since_id, max_id: max_id, count: 200 }
 
-        session.user_timeline(
-          user_id,
-          since_id: since_id,
-          max_id: max_id,
-          count: 200
-        ).as_json
+        return session.home_timeline(**opts).as_json if user_id.nil?
+
+        session.user_timeline(user_id, **opts).as_json
       end
 
       def self.call(from, to, session: ::Domain::Twitter.session)
@@ -46,24 +41,24 @@ module Domain
           @response = response
         end
 
-        def call(from, to, **opts)
+        def call(_from, _to, **_opts)
           response
         end
 
-        def self.call(from, to, **opts)
+        def self.call(from, to, **_opts)
           instance = new
           instance.(from, to)
         end
 
         def self.build_with_personal_response
-          path = Rails.root.join("home_timeline.personal.json")
+          path = Rails.root.join('home_timeline.personal.json')
           response = Sample.response(path)
           new(response)
         end
 
         module Sample
           def self.response_path
-            Rails.root.join("home_timeline.json")
+            Rails.root.join('home_timeline.json')
           end
 
           def self.response(path = nil)

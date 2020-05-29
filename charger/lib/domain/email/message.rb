@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Domain
   module Email
     class Message
@@ -24,14 +26,14 @@ module Domain
       end
 
       def messages_interpolable
-        messages.map { |msg| msg.as_json }
+        messages.map(&:as_json)
       end
 
       def as_json
         {
-          "to" => to,
-          "subject" => subject_interpolated,
-          "body" => body_interpolated
+          'to' => to,
+          'subject' => subject_interpolated,
+          'body' => body_interpolated
         }
       end
 

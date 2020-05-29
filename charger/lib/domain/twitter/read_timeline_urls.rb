@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'domain/twitter'
 require 'domain/twitter/read_timeline_urls/iterator'
 
@@ -18,14 +20,14 @@ module Domain
 
       def self.call(from, to, session: ::Domain::Twitter.session, &block)
         instance = build
-        instance.(from, to, session: ::Domain::Twitter.session, &block)
+        instance.(from, to, session: session, &block)
       end
 
       def call(from, to, session: ::Domain::Twitter.session, &block)
         iterator.(from, to, session: session) do |message_hash|
-          next if message_hash["entities"]["urls"].empty?
+          next if message_hash['entities']['urls'].empty?
 
-          message_hash["entities"]["urls"].each do |url_hash|
+          message_hash['entities']['urls'].each do |url_hash|
             message = Message.build_from_hash(url_hash, message_hash)
 
             block.(message)

@@ -57,15 +57,15 @@ class TimelineRequest
   end
 
   def self.default_subject
-    "Twitter URLs"
+    'Twitter URLs'
   end
 
   def self.default_body
-    <<-TEXT
-Twitter URLs:
-{% for message in messages %}
-  - {{ message.url }} | {{ message.date }} | {{ message.summary }}
-{% endfor %}
+    <<~TEXT
+      Twitter URLs:
+      {% for message in messages %}
+        - {{ message.url }} | {{ message.date }} | {{ message.summary }}
+      {% endfor %}
     TEXT
   end
 
