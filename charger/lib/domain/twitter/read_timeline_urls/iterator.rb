@@ -21,6 +21,11 @@ module Domain
           instance
         end
 
+        def self.call(from, to, session: ::Domain::Twitter.session, &block)
+          instance = build
+          instance.(from, to, session: session, &block)
+        end
+
         def call(from, to, session: ::Domain::Twitter.session, &block)
           messages = get_timeline_urls.(from, to, session: session)
 

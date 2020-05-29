@@ -38,6 +38,17 @@ module Domain
       def to_json(**opts)
         as_json.to_json(opts)
       end
+
+      module Sample
+        def self.default
+          Message.new(
+            Time.current,
+            "https://twitter.com",
+            "Twitter",
+            "twitter.com"
+          )
+        end
+      end
     end
   end
 end

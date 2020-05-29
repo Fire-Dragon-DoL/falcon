@@ -11,6 +11,17 @@ module Domain
         instance = new
         instance.(message)
       end
+
+      class Substitute
+        def call(message)
+          puts message.as_json.inspect
+        end
+
+        def self.call(message)
+          instance = new
+          instance.(message)
+        end
+      end
     end
   end
 end

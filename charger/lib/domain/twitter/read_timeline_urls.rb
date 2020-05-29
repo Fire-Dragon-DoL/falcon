@@ -16,6 +16,11 @@ module Domain
         instance
       end
 
+      def self.call(from, to, session: ::Domain::Twitter.session, &block)
+        instance = build
+        instance.(from, to, session: ::Domain::Twitter.session, &block)
+      end
+
       def call(from, to, session: ::Domain::Twitter.session, &block)
         iterator.(from, to, session: session) do |message_hash|
           next if message_hash["entities"]["urls"].empty?
