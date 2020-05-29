@@ -40,13 +40,14 @@ services:
       - storage
       - messaging
     build: ./blaster
-    # entrypoint: ["bundle", "exec", "sidekiq"]
+    entrypoint: ["bundle", "exec", "rake", "sneakers:run"]
     ports:
       - "3002:3002"
     environment:
       - "REDIS_URL=redis://storage:6379/15"
       - "RABBITMQ_URL=amqp://messaging:5672"
       - "REDIS_PROVIDER=REDIS_URL"
+      - "WORKERS=EmailWorker"
   storage:
     image: redis:6.0.3-alpine3.11
     ports:

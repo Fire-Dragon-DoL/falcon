@@ -5,8 +5,12 @@ module Domain
     class Send
       def call(message)
         channel = ::DB::Messaging::Repo.create_channel
-        exchange = channel.fanout("#{::DB::Messaging::NS}.emails")
-        exchange.publish(message.to_json)
+        exchange = channel.default_exchange
+
+        exchange.publish(
+          message.to_json,
+          routing_key: "emails"
+        )
       end
 
       def self.call(message)

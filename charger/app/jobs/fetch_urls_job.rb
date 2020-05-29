@@ -6,8 +6,8 @@ class FetchUrlsJob < ApplicationJob
   queue_as :default
 
   def perform(timeline_request)
-    # TODO: Use `build` to run on the Twitter API
-    send_urls = ::Domain::SendURLs.new
+    # Use `new` to run on mocked data
+    send_urls = ::Domain::SendURLs.build
 
     send_urls.(
       timeline_request.start_date,

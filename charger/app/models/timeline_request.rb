@@ -52,8 +52,9 @@ class TimelineRequest
   def self.default
     now = Time.current
     yesterday = now - 1.day
+    to = ''
 
-    TimelineRequest.new(yesterday, now, '', default_subject, default_body)
+    TimelineRequest.new(yesterday, now, to, default_subject, default_body)
   end
 
   def self.default_subject
