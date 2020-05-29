@@ -3,20 +3,40 @@ require 'domain/twitter'
 module Domain
   module Twitter
     class GetTimelineURLs
-      def call(from, to, client: ::Domain::Twitter.client)
+      # XXX: user_timeline is easier for testing due to lower rate limiting
+      attr_accessor :user_id
+
+      def initialize(user_id = nil)
+        @user_id = user_id
+      end
+
+      def call(from, to, session: ::Domain::Twitter.session)
         since_id = SnowflakeId.to_snowflake(from.to_time).id - 1
         max_id = SnowflakeId.to_snowflake(to.to_time).id
 
-        client.home_timeline(
+        timeline(session, since_id, max_id)
+      end
+
+      def timeline(session, since_id, max_id)
+        if user_id.nil?
+          return session.home_timeline(
+            since_id: since_id,
+            max_id: max_id,
+            count: 200
+          ).as_json
+        end
+
+        session.user_timeline(
+          user_id,
           since_id: since_id,
           max_id: max_id,
           count: 200
-        )
+        ).as_json
       end
 
-      def self.call(from, to, client: ::Domain::Twitter.client)
+      def self.call(from, to, session: ::Domain::Twitter.session)
         instance = new
-        instance.(from, to, client: client)
+        instance.(from, to, session: session)
       end
 
       class Substitute
