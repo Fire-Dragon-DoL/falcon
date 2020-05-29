@@ -1,0 +1,33 @@
+require:
+  - rubocop-rails
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+Lint/RaiseException:
+  Enabled: true
+Lint/StructNewOverride:
+  Enabled: true
+Style/ExponentialNotation:
+  Enabled: true
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
+Rails/RefuteMethods:
+  Enabled: true
+# `call` on objects and classes make more explicit the concept of behavioral
+# objects (known also as service objects)
+Style/LambdaCall:
+  EnforcedStyle: braces
+  Enabled: true
+# No documentation for homework
+Style/Documentation:
+  Enabled: false

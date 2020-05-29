@@ -33,14 +33,21 @@ rails new charger \
 Project was generated using the following command:
 
 ```bash
-rails new charger \
+rails new blaster \
   --skip-action-mailbox \
+  --skip-action-text \
+  --skip-active-record \
   --skip-active-storage \
   --skip-action-cable \
-  --skip-turbolinks
+  --skip-turbolinks \
+  --skip-spring \
+  --skip-listen \
+  --skip-bootsnap \
+  --skip-system-test
 ```
 
 ## Further Development
 
 - Cache Twitter API requests
 - Support multiple Twitter users
+- Extensive testing
