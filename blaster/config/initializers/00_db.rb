@@ -2,9 +2,7 @@
 
 module DB
   module Messaging
-    Repo = Bunny.new.tap { |instance| instance.start }
-    NS = "falcon"
+    Repo = Bunny.new.tap(&:start)
+    NS = 'falcon'
   end
-
-  Storage = Redis::Namespace.new('falcon:blaster', redis: Redis.new)
 end
