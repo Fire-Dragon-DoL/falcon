@@ -5,6 +5,7 @@ services:
       - storage
       - messaging
     build: ./charger
+    restart: on-failure
     ports:
       - "3001:3001"
     environment:
@@ -15,6 +16,7 @@ services:
       - storage
       - messaging
     build: ./charger
+    restart: on-failure
     entrypoint: ["bundle", "exec", "sidekiq"]
     environment:
       - "REDIS_URL=redis://storage:6379/15"
@@ -28,6 +30,7 @@ services:
     depends_on:
       - messaging
     build: ./blaster
+    restart: on-failure
     entrypoint: ["bundle", "exec", "rake", "sneakers:run"]
     environment:
       - "RABBITMQ_URL=amqp://messaging:5672"

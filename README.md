@@ -97,3 +97,6 @@ It will print the emails to STDOUT. The following ports need to be available:
 - 3001
 - 5600
 - 6400
+
+The docker applications start in order but might restart on error due to
+redis and rabbitmq being not loaded yet.
