@@ -7,6 +7,9 @@ Service based email sending.
 
 ## Required Environment Variables
 
+If executing locally outside of Docker, the following environment variables
+are required:
+
 ```
 REDIS_URL="redis://localhost:6400/15"
 RABBITMQ_URL="amqp://localhost:5600"
@@ -91,7 +94,17 @@ ActionMailer.
 
 ## Usage
 
-The application can be executed locally by running `docker-compose up`.
+The following environment variables are required to use docker-compose:
+
+```
+# Twitter API related keys and tokens
+FETCHER_TWT_API_KEY='foo'
+FETCHER_TWT_API_SECRET='bar'
+FETCHER_TWT_ACCESS_TOKEN='token'
+FETCHER_TWT_ACCESS_TOKEN_SECRET='tokensecret'
+```
+
+The application can be executed by running `docker-compose up`.
 It will print the emails to STDOUT. The following ports need to be available:
 
 - 3001

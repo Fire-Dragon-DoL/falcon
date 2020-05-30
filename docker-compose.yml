@@ -6,10 +6,12 @@ services:
       - messaging
     build: ./charger
     restart: on-failure
+    entrypoint: ["/app/start.sh", "rails s"]
     ports:
       - "3001:3001"
     environment:
       - "REDIS_URL=redis://storage:6379/15"
+      - "RABBITMQ_URL=amqp://messaging:5672"
       - "REDIS_PROVIDER=REDIS_URL"
   fetcher:
     depends_on:
@@ -17,7 +19,7 @@ services:
       - messaging
     build: ./charger
     restart: on-failure
-    entrypoint: ["bundle", "exec", "sidekiq"]
+    entrypoint: ["/app/start.sh", "bundle exec sidekiq"]
     environment:
       - "REDIS_URL=redis://storage:6379/15"
       - "RABBITMQ_URL=amqp://messaging:5672"
@@ -31,7 +33,7 @@ services:
       - messaging
     build: ./blaster
     restart: on-failure
-    entrypoint: ["bundle", "exec", "rake", "sneakers:run"]
+    entrypoint: ["/app/start.sh", "bundle exec rake sneakers:run"]
     environment:
       - "RABBITMQ_URL=amqp://messaging:5672"
       - "WORKERS=EmailWorker"
